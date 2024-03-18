@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 
 Future<void> main() async {
   //get the status of location and bluetooth
+  WidgetsFlutterBinding.ensureInitialized();
   statusLocation = await Permission.location.status;
   statusBluetoothConnect = await Permission.bluetoothConnect.status;
   final ble = FlutterReactiveBle();
@@ -69,9 +70,14 @@ Future<void> main() async {
           ),
         ],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Insulin',
-          color: Colors.grey.shade700,
-          theme: ThemeData.dark(),
+          color: Colors.blue.shade200,
+          theme: ThemeData.dark().copyWith(
+            textTheme: const TextTheme(
+              bodyLarge: TextStyle(color: Colors.black),
+            ),
+          ),
           home: const MyApp(),
         ),
   ));
