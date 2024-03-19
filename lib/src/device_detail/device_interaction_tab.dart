@@ -21,10 +21,10 @@ class DeviceInteractionTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Consumer4<DeviceConnector,
-      ConnectionStateUpdate, DeviceInteractor, DeviceInteractor>(
-    builder: (_, deviceConnector, connectionStateUpdate, serviceDiscoverer,
-        interactor, __) =>
-        Connecting(
+          ConnectionStateUpdate, DeviceInteractor, DeviceInteractor>(
+        builder: (_, deviceConnector, connectionStateUpdate, serviceDiscoverer,
+                interactor, __) =>
+            Connecting(
           viewModel: DeviceInteractionViewModel(
               deviceId: device.id,
               connectableStatus: device.connectable,
@@ -39,7 +39,7 @@ class DeviceInteractionTab extends StatelessWidget {
           subscribeToCharacteristic: interactor.subScribeToCharacteristic,
           device: device,
         ),
-  );
+      );
 }
 
 // @immutable
@@ -92,15 +92,15 @@ class Connecting extends StatefulWidget {
 
   final QualifiedCharacteristic characteristic;
   final Future<void> Function(
-      QualifiedCharacteristic characteristic, List<int> value)
-  writeWithResponse;
+          QualifiedCharacteristic characteristic, List<int> value)
+      writeWithResponse;
   final Future<void> Function(
-      QualifiedCharacteristic characteristic, List<int> value)
-  writeWithoutResponse;
+          QualifiedCharacteristic characteristic, List<int> value)
+      writeWithoutResponse;
   final Future<List<int>> Function(QualifiedCharacteristic characteristic)
-  readCharacteristic;
+      readCharacteristic;
   final Stream<List<int>> Function(QualifiedCharacteristic characteristic)
-  subscribeToCharacteristic;
+      subscribeToCharacteristic;
   final DiscoveredDevice device;
 
   @override
@@ -112,15 +112,40 @@ class _ConnectingState extends State<Connecting> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Interaction Page'),
+        title: const Text(
+          'Interaction Page',
+        ),
       ),
       body: Center(
         child: Column(
           children: [
-            Text('${widget.viewModel.connectionStatus}'),
+            Text(
+              '${widget.viewModel.connectionStatus}',
+            ),
+            ElevatedButton(
+              onPressed: () {
+                widget.viewModel.deviceConnector.connect(widget.device.id);
+              },
+              child: const Text(
+                'connect',
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                widget.viewModel.deviceConnector.disconnect(widget.device.id);
+              },
+              child: const Text(
+                'disconnect',
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+  @override
+  void dispose(){
+    widget.viewModel.deviceConnector.disconnect(widget.device.id);
+    super.dispose();
   }
 }

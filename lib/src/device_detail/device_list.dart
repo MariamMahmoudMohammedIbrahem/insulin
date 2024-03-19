@@ -78,6 +78,21 @@ class _ScanningState extends State<Scanning> {
       ),
       body: ListView(
         children: [
+          Center(
+            child: Text(
+              '${widget.connectionStatus}',
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: _startScanning,
+            child: const Text(
+              'scan',
+            ),
+          ),
           ...widget.scannerState.discoveredDevices.map(
             (e) => ListTile(
               title: Text(e.name.isEmpty ? 'UNNAMED' : e.name),
@@ -90,16 +105,15 @@ class _ScanningState extends State<Scanning> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => DeviceInteractionTab(
-                              device: e,
-                            characteristic:
-                            QualifiedCharacteristic(
+                            device: e,
+                            characteristic: QualifiedCharacteristic(
                               characteristicId: Uuid.parse(
                                   "0000ffe1-0000-1000-8000-00805f9b34fb"),
                               serviceId: Uuid.parse(
                                   "0000ffe0-0000-1000-8000-00805f9b34fb"),
                               deviceId: e.id,
                             ),
-                              ),
+                          ),
                         )));
               },
             ),
@@ -118,27 +132,6 @@ class _ScanningState extends State<Scanning> {
   void _startScanning() {
     if (!widget.scannerState.scanIsInProgress) {
       widget.startScan([]);
-      // Future.delayed(const Duration(seconds: 2), () {
-      //   if (scanStopped) {
-      //     _connect();
-      //   }
-      // });
-    }
-  }
-
-  void _connect() {
-    for (var device in widget.scannerState.discoveredDevices) {
-      widget.deviceConnector.connect(device.id);
-      subscribeStream = connectionStatusController.listen((event) {
-        if (event == ConnectionStatus.connected) {
-          subscribeStream?.cancel();
-        } else if (event == ConnectionStatus.connecting) {
-          Fluttertoast.showToast(
-            msg: 'connecting',
-            toastLength: Toast.LENGTH_LONG,
-          );
-        }
-      });
     }
   }
 }
