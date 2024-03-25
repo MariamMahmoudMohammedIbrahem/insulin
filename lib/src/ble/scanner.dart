@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:insulin/src/ble/reactive_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
-import 'package:insulin/src/constants.dart';
 
 class BleScanner implements ReactiveState<ScannerState> {
   BleScanner({
