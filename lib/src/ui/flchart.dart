@@ -40,7 +40,8 @@ class _FlChartState extends State<FlChart> {
 
 Widget bottomTitleWidgets(double value, TitleMeta meta) {
   const style = TextStyle(
-    fontWeight: FontWeight.bold,
+    // fontWeight: FontWeight.bold,
+    color: Colors.grey,
     fontSize: 16,
   );
   Widget text;
@@ -58,34 +59,7 @@ Widget bottomTitleWidgets(double value, TitleMeta meta) {
       text = const Text('4', style: style);
       break;
     case 4:
-      text = const Text('5', style: style);
-      break;
-    case 5:
-      text = const Text('6', style: style);
-      break;
-    case 6:
-      text = const Text('7', style: style);
-      break;
-    case 7:
-      text = const Text('8', style: style);
-      break;
-    case 8:
-      text = const Text('9', style: style);
-      break;
-    case 9:
-      text = const Text('10', style: style);
-      break;
-    case 10:
-      text = const Text('11', style: style);
-      break;
-    case 11:
-      text = const Text('12', style: style);
-      break;
-    case 12:
-      text = const Text('13', style: style);
-      break;
-    case 13:
-      text = const Text('14', style: style);
+      text = const Text('Today', style: style);
       break;
     default:
       text = const Text('', style: style);
@@ -100,7 +74,8 @@ Widget bottomTitleWidgets(double value, TitleMeta meta) {
 
 Widget leftTitleWidgets(double value, TitleMeta meta) {
   const style = TextStyle(
-    fontWeight: FontWeight.bold,
+    // fontWeight: FontWeight.bold,
+    color: Colors.grey,
     fontSize: 16,
   );
   String text;
@@ -171,7 +146,7 @@ LineChartData mainData() {
   return LineChartData(
     // backgroundColor: Colors.grey.shade200,
     gridData: const FlGridData(
-      show: true,
+      show: false,
       drawVerticalLine: true,
       // space between lines
       horizontalInterval: 20,
@@ -217,10 +192,13 @@ LineChartData mainData() {
     ),
     borderData: FlBorderData(
       show: true,
-      border: Border.all(color: const Color(0xff37434d)),
+      border: const Border(
+        left: BorderSide(color: Color(0xff37434d), width: 1),
+        bottom: BorderSide(color: Color(0xff37434d), width: 1),
+      ),
     ),
     minX: 0,
-    maxX: 14,
+    maxX: 4,
     minY: 70,
     maxY: 230,
     lineBarsData: [
@@ -236,12 +214,13 @@ LineChartData mainData() {
         //   FlSpot(12, 38.01),
         // ],
         spots: bloodGlucose
-            .map((e) => FlSpot(bloodGlucose.indexOf(e).toDouble(), e))
+            .map((e) => FlSpot(bloodGlucose.indexOf(e).toDouble(), e.toDouble()))
             .toList(),
         isCurved: true,
         gradient: LinearGradient(
           colors: gradientColors,
         ),
+        // color: ,
         // width of curve
         barWidth: 5,
         isStrokeCapRound: false,

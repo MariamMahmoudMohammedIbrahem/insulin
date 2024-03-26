@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insulin/src/ui/dashboard.dart';
 import 'package:insulin/src/ui/flchart.dart';
 import 'package:insulin/src/ui/syncfusion.dart';
 
@@ -57,6 +58,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: Colors.blue.shade200,
               ),
               child: const Text('SYNCFUSION', style: TextStyle(color: Colors.black),),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const DashBoard()));
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue.shade200,
+              ),
+              child: const Text('dashboard', style: TextStyle(color: Colors.black),),
             ),
           ],
         ),

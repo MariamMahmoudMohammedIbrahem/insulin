@@ -55,9 +55,9 @@ dependencies:
   provider: ^6.1.2
   functional_data: ^1.1.1
   nfc_manager: ^3.4.0
-  sqflite_sqlcipher: ^2.2.1
+#  sqflite_sqlcipher: ^2.2.1
   path: ^1.9.0
-#  sqflite: ^2.3.2
+  sqflite: ^2.3.2
 
 dev_dependencies:
   flutter_test:
