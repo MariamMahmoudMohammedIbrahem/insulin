@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
+import 'package:insulin/src/ui/dashboard.dart';
+import 'package:insulin/src/ui/data_graph.dart';
+import 'package:insulin/src/ui/history_graph.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -66,3 +69,4 @@ class ChartData {
 DateTime now = DateTime.now();
 String formattedDate = DateFormat('dd, MMMM').format(now);
 String formattedTime = DateFormat('hh:mm a').format(now);
+final List<Widget> pages = [const CurrentData(), const DashBoard(), const HistoryData()];

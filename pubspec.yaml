@@ -58,6 +58,7 @@ dependencies:
 #  sqflite_sqlcipher: ^2.2.1
   path: ^1.9.0
   sqflite: ^2.3.2
+  smooth_page_indicator: ^1.1.0
 
 dev_dependencies:
   flutter_test:
