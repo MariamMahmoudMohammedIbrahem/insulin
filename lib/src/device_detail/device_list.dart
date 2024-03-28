@@ -3,6 +3,7 @@ import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:functional_data/functional_data.dart';
 import 'package:insulin/src/device_detail/device_interaction_tab.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../ble/device_connector.dart';
 import '../ble/logger.dart';
@@ -123,10 +124,15 @@ class _ScanningState extends State<Scanning> {
 
   @override
   void initState() {
+    _markAsNotFirstTime();
     super.initState();
     _startScanning();
   }
 
+  void _markAsNotFirstTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isFirstTime', false);
+  }
   void _startScanning() {
     if (!widget.scannerState.scanIsInProgress) {
       widget.startScan([]);

@@ -6,19 +6,19 @@ import 'package:insulin/src/ble/logger.dart';
 import 'package:insulin/src/ble/scanner.dart';
 import 'package:insulin/src/ble/status_monitor.dart';
 import 'package:insulin/src/constants.dart';
-import 'package:insulin/src/permissions/bluetooth_permission.dart';
-import 'package:insulin/src/permissions/location_permission.dart';
 import 'package:insulin/src/permissions/permission.dart';
+import 'package:insulin/src/ui/dashboard.dart';
 import 'package:insulin/src/ui/home_screen.dart';
-import 'package:insulin/src/ui/status_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   //get the status of location and bluetooth
   WidgetsFlutterBinding.ensureInitialized();
   statusLocation = await Permission.location.status;
   statusBluetoothConnect = await Permission.bluetoothConnect.status;
+  statusNotification = await Permission.notification.status;
   final ble = FlutterReactiveBle();
   final bleLogger = BleLogger(ble: ble);
   final scanner = BleScanner(ble: ble, logMessage: bleLogger.addToLog);
@@ -78,33 +78,44 @@ Future<void> main() async {
               bodyLarge: TextStyle(color: Colors.black),
             ),
           ),
-          home: const MyApp(),
+          home: const SplashScreen(),
         ),
   ));
   FlutterReactiveBle();
 }
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) => Consumer2<BleStatus?, PermissionProvider>(
-    builder: (_, status, permission, __) {
-      if (status == BleStatus.ready && permission.bluetoothStatus.isGranted && permission.locationStatus.isGranted) {
-        return const HomeScreen();
-      }
-      else if(permission.locationStatus.isDenied){
-        permission.requestLocationPermission();
-        return const LocationPermission();
-      }
-      else if(permission.bluetoothStatus.isDenied){
-        permission.requestBluetoothPermission();
-        return const BluetoothPermission();
-      }
-      else {
-        return StatusScreen(status: status ?? BleStatus.unknown);
-      }
-    },
-  );
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  bool _isFirstTime = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFirstTime();
+  }
+
+  void _checkFirstTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+    setState(() {
+      _isFirstTime = isFirstTime;
+    });
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isFirstTime) {
+      return const HomeScreen();
+    } else {
+      // Show your main app content
+      // return const ScanningListScreen();
+      return const DashBoard();
+    }
+  }
 }

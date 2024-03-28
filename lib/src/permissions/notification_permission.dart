@@ -4,14 +4,14 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../constants.dart';
 
-class LocationPermission extends StatefulWidget {
-  const LocationPermission({super.key});
+class BluetoothPermission extends StatefulWidget {
+  const BluetoothPermission({super.key});
 
   @override
-  State<LocationPermission> createState() => _LocationPermissionState();
+  State<BluetoothPermission> createState() => _BluetoothPermissionState();
 }
 
-class _LocationPermissionState extends State<LocationPermission> {
+class _BluetoothPermissionState extends State<BluetoothPermission> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -22,12 +22,12 @@ class _LocationPermissionState extends State<LocationPermission> {
           children: [
             SizedBox(
               width: width,
-              child: Image.asset('images/location.png'),
+              child: Image.asset('images/bluetooth.png'),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * .12),
+              padding: EdgeInsets.symmetric(horizontal: width * 0.12),
               child: const Text(
-                'We will need your location to be able to connect to your device',
+                'We need your permission for sending notifications to give you better experience',
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
@@ -39,12 +39,12 @@ class _LocationPermissionState extends State<LocationPermission> {
               onPressed: _requestPermission,
               style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.brown,
-                  backgroundColor: Colors.brown.shade500, //replace with 855A2D
+                  backgroundColor: Colors.brown.shade600,
                   disabledForegroundColor: Colors.brown.shade600,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10))),
               child: const Text(
-                'accessLocation',
+                'accessBluetooth',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
             ),
@@ -55,11 +55,12 @@ class _LocationPermissionState extends State<LocationPermission> {
   }
 
   Future<void> _requestPermission() async {
-    if (statusLocation.isDenied) {
-      statusLocation = await Permission.location.request();
-      if (statusLocation.isGranted) {
-        statusLocation = PermissionStatus.granted;
-        Fluttertoast.showToast(msg: 'location granted');
+    if (statusNotification.isDenied) {
+      statusNotification = await Permission.notification.request();
+      if (statusNotification.isGranted) {
+        statusNotification = PermissionStatus.granted;
+        Permission.bluetoothScan.request();
+        Fluttertoast.showToast(msg: 'bluetooth granted');
       }
     }
   }
